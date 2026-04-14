@@ -15,7 +15,7 @@ const carouselItems = [
   { title: "Croissant artesanal", image: "/images/menu-1.jpg" },
 ];
 
-const fadeUp = {
+const fadeUp: any = { // Agregamos : any para evitar el error de tipos en Vercel
   hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
