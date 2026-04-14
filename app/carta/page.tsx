@@ -136,7 +136,7 @@ export default function MenuPage() {
     className="inline-flex items-center gap-2 rounded-full bg-[#d97c97] px-10 py-4 text-sm font-bold text-white shadow-lg shadow-[#d97c97]/20 transition duration-300 hover:scale-105 hover:bg-[#c66a85]"
   >
     Ver carta completa (PDF)
-    <ArrowRight size={18} />
+    <ArrowRight size={20} />
   </Link>
 </motion.div>
 
