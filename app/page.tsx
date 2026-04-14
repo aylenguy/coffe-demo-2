@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
+
 import { useState } from "react";
 import {
   Coffee,
@@ -70,7 +71,7 @@ const benefits = [
   },
 ];
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
@@ -82,7 +83,19 @@ const fadeUp = {
   },
 };
 
-const fadeRight = {
+const fadeLeft: Variants = {
+  hidden: { opacity: 0, x: -40 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.65,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+const fadeRight: Variants = {
   hidden: { opacity: 0, x: 40 },
   show: {
     opacity: 1,
@@ -94,7 +107,7 @@ const fadeRight = {
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: {},
   show: {
     transition: {
@@ -102,6 +115,7 @@ const staggerContainer = {
     },
   },
 };
+
 
 function ReviewCarousel() {
   const [index, setIndex] = useState(0);

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Coffee, Sparkles, HeartHandshake } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+
 
 const values = [
   {
@@ -26,7 +27,7 @@ const values = [
   },
 ];
 
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 24 },
   show: {
     opacity: 1,
@@ -38,7 +39,7 @@ const fadeUp = {
   },
 };
 
-const fadeLeft = {
+const fadeLeft: Variants = {
   hidden: { opacity: 0, x: -40 },
   show: {
     opacity: 1,
@@ -50,7 +51,7 @@ const fadeLeft = {
   },
 };
 
-const fadeRight = {
+const fadeRight: Variants = {
   hidden: { opacity: 0, x: 40 },
   show: {
     opacity: 1,
@@ -62,7 +63,7 @@ const fadeRight = {
   },
 };
 
-const staggerContainer = {
+const staggerContainer: Variants = {
   hidden: {},
   show: {
     transition: {
@@ -70,6 +71,7 @@ const staggerContainer = {
     },
   },
 };
+
 
 export default function NosotrosPage() {
   return (

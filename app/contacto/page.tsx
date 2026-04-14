@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, MapPin, MessageCircle, Clock3, FileText } from "lucide-react";
+import { motion, Variants } from "framer-motion";
+
 
 // Mantenemos tus variantes de animación que están muy bien
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.6, ease: "easeOut" } 
+  },
 };
+
 
 export default function ContactoPage() {
   return (
