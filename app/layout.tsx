@@ -15,9 +15,19 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Brunch y Co",
+  title: {
+    default: "Brunch & Co — Cafetería en Rosario",
+    template: "%s | Brunch & Co",
+  },
   description:
-    "Cafetería specialty con experiencia premium y diseño editorial.",
+    "Café de especialidad y pastelería artesanal en Rosario, Argentina. Brunch, desayunos y meriendas en un espacio con identidad.",
+  keywords: ["café", "brunch", "Rosario", "pastelería", "especialidad", "desayuno"],
+  openGraph: {
+    title: "Brunch & Co",
+    description: "Café de especialidad en Rosario, Argentina.",
+    locale: "es_AR",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
