@@ -53,7 +53,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Ícono admin con tooltip */}
             <div className="relative">
               <Link
                 href="/admin"
@@ -120,6 +119,18 @@ export default function Navbar() {
               className="mt-4 inline-block rounded-full bg-[#1d4448] px-5 py-3 text-sm font-bold text-white transition duration-300"
             >
               Reservar ahora
+            </Link>
+
+            {/* ICONO ADMIN en mobile */}
+            <Link
+              href="/admin"
+              onClick={() => setMobileMenuOpen(false)}
+              className="mx-auto flex items-center justify-center gap-2 text-sm text-[#6f7c7a] transition duration-300 hover:text-[#d97c97]"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full border border-[#e0d9d0] bg-white text-[#1d4448]">
+                <User size={14} />
+              </span>
+              <span>Iniciar sesión</span>
             </Link>
           </div>
         </div>

@@ -65,7 +65,7 @@ export default function ReservasPage() {
     <main className="min-h-screen bg-white">
 
       {/* Hero */}
-      <section className="bg-white px-6 py-20 text-center">
+      <section className="bg-white px-4 sm:px-6 py-14 sm:py-20 text-center">
         <div className="mx-auto max-w-2xl">
           <div className="mb-4 flex items-center justify-center gap-4">
             <div className="h-[1px] w-8 bg-[#d97c97]" />
@@ -74,19 +74,19 @@ export default function ReservasPage() {
             </p>
             <div className="h-[1px] w-8 bg-[#d97c97]" />
           </div>
-          <h1 className="text-5xl font-bold text-[#1d4448] md:text-6xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#1d4448]">
             Reservá tu lugar
           </h1>
-          <p className="mt-4 text-lg text-[#4d5b59]">
+          <p className="mt-4 text-base sm:text-lg text-[#4d5b59]">
             Asegurá tu mesa y llegá sin apuro.
           </p>
         </div>
       </section>
 
       {/* Formulario */}
-      <section className="px-6 py-6 pb-20">
+      <section className="px-4 sm:px-6 py-6 pb-20">
         <div className="mx-auto max-w-lg">
-          <div className="rounded-[32px] bg-white p-10 shadow-sm border border-[#f0e6db]">
+          <div className="rounded-[32px] bg-white p-6 sm:p-10 shadow-sm border border-[#f0e6db]">
 
             {estado === "ok" ? (
               // ── ÉXITO ──
@@ -124,8 +124,8 @@ export default function ReservasPage() {
                   />
                 </div>
 
-                {/* Email + Teléfono en fila */}
-                <div className="flex gap-3">
+                {/* Email + Teléfono — fila en sm+, columna en mobile */}
+                <div className="flex flex-col gap-5 sm:flex-row sm:gap-3">
                   <div className="flex flex-1 flex-col gap-1">
                     <label className="text-sm font-bold text-[#1d4448]">Email</label>
                     <input
@@ -154,8 +154,8 @@ export default function ReservasPage() {
                   </div>
                 </div>
 
-                {/* Fecha + Personas en fila */}
-                <div className="flex gap-3">
+                {/* Fecha + Personas — fila en sm+, columna en mobile */}
+                <div className="flex flex-col gap-5 sm:flex-row sm:gap-3">
                   <div className="flex flex-1 flex-col gap-1">
                     <label className="text-sm font-bold text-[#1d4448]">Fecha y hora</label>
                     <input
@@ -168,7 +168,7 @@ export default function ReservasPage() {
                       className={inputClass}
                     />
                   </div>
-                  <div className="flex w-32 flex-col gap-1">
+                  <div className="flex flex-col gap-1 sm:w-32">
                     <label className="text-sm font-bold text-[#1d4448]">Personas</label>
                     <input
                       name="personas"
@@ -212,7 +212,7 @@ export default function ReservasPage() {
                 <button
                   type="submit"
                   disabled={estado === "loading"}
-                  className="mt-2 rounded-full bg-[#1d4448] px-10 py-4 text-sm font-bold text-white transition hover:bg-[#d97c97] disabled:opacity-50"
+                  className="mt-2 rounded-full bg-[#1d4448] px-10 py-4 text-sm font-bold text-white transition hover:bg-[#d97c97] disabled:opacity-50 w-full sm:w-auto"
                 >
                   {estado === "loading" ? "Enviando..." : "Confirmar reserva"}
                 </button>

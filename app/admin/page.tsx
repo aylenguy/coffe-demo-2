@@ -129,10 +129,27 @@ export default function AdminPage() {
     );
   };
 
+  const formatFecha = (fecha: string) =>
+    new Date(fecha).toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+  const formatFechaCorta = (fecha: string) =>
+    new Date(fecha).toLocaleString("es-AR", {
+      day: "2-digit",
+      month: "short",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
   // ── LOGIN ──────────────────────────────────────────────────────────────────
   if (!token) {
     return (
-      <main className="min-h-screen bg-white flex items-center justify-center px-6">
+      <main className="min-h-screen bg-white flex items-center justify-center px-4 sm:px-6">
         <div className="w-full max-w-sm">
           <div className="mb-8 text-center">
             <p className="mb-2 text-xs font-bold uppercase tracking-[0.35em] text-[#d97c97]">
@@ -143,7 +160,7 @@ export default function AdminPage() {
 
           <form
             onSubmit={handleLogin}
-            className="rounded-[32px] bg-white border border-[#f0e6db] p-8 flex flex-col gap-4 shadow-sm"
+            className="rounded-[32px] bg-white border border-[#f0e6db] p-6 sm:p-8 flex flex-col gap-4 shadow-sm"
           >
             <div className="flex flex-col gap-1">
               <label className="text-sm font-bold text-[#1d4448]">Usuario</label>
@@ -183,15 +200,16 @@ export default function AdminPage() {
   // ── PANEL ──────────────────────────────────────────────────────────────────
   return (
     <>
-      <main className="min-h-screen bg-white px-6 py-16">
+      <main className="min-h-screen bg-white px-4 sm:px-6 py-10 sm:py-16">
         <div className="mx-auto max-w-6xl">
 
-          <div className="mb-10 flex items-center justify-between">
+          {/* Header */}
+          <div className="mb-8 sm:mb-10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="mb-1 text-xs font-bold uppercase tracking-[0.35em] text-[#d97c97]">
                 Panel de administración
               </p>
-              <h1 className="text-3xl font-bold text-[#1d4448]">
+              <h1 className="text-2xl sm:text-3xl font-bold text-[#1d4448]">
                 Reservas
                 <span className="ml-3 rounded-full bg-[#f0e6db] px-3 py-1 text-base font-bold text-[#1d4448]">
                   {reservas.length}
@@ -200,7 +218,7 @@ export default function AdminPage() {
             </div>
             <button
               onClick={() => { setToken(""); setReservas([]); }}
-              className="rounded-full border border-[#e0d9d0] px-6 py-2 text-sm font-bold text-[#1d4448] transition hover:border-[#d97c97] hover:text-[#d97c97]"
+              className="self-start sm:self-auto rounded-full border border-[#e0d9d0] px-6 py-2 text-sm font-bold text-[#1d4448] transition hover:border-[#d97c97] hover:text-[#d97c97]"
             >
               Cerrar sesión
             </button>
@@ -211,66 +229,122 @@ export default function AdminPage() {
               <p className="text-[#4d5b59]">No hay reservas todavía.</p>
             </div>
           ) : (
-            <div className="rounded-[32px] bg-white border border-[#f0e6db] shadow-sm overflow-hidden">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-[#f0e6db] bg-[#faf8f6]">
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Nombre</th>
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Contacto</th>
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Fecha</th>
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Personas</th>
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Estado</th>
-                    <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {reservas.map((r) => (
-                    <tr key={r.id} className="border-b border-[#f0e6db] last:border-0 hover:bg-[#faf8f6] transition">
-                      <td className="px-6 py-4">
-                        <p className="font-medium text-[#1d4448]">{r.nombre}</p>
+            <>
+              {/* ── TABLA — solo en md+ ── */}
+              <div className="hidden md:block rounded-[32px] bg-white border border-[#f0e6db] shadow-sm overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-[#f0e6db] bg-[#faf8f6]">
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Nombre</th>
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Contacto</th>
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Fecha</th>
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Personas</th>
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Estado</th>
+                      <th className="px-6 py-4 text-left font-bold text-[#1d4448]">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {reservas.map((r) => (
+                      <tr
+                        key={r.id}
+                        className="border-b border-[#f0e6db] last:border-0 hover:bg-[#faf8f6] transition"
+                      >
+                        <td className="px-6 py-4">
+                          <p className="font-medium text-[#1d4448]">{r.nombre}</p>
+                          {r.notas && (
+                            <p className="mt-0.5 text-xs text-[#4d5b59] italic">"{r.notas}"</p>
+                          )}
+                        </td>
+                        <td className="px-6 py-4">
+                          <p className="text-[#4d5b59]">{r.email}</p>
+                          {r.telefono && (
+                            <p className="text-xs text-[#4d5b59]">{r.telefono}</p>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-[#4d5b59]">{formatFecha(r.fecha)}</td>
+                        <td className="px-6 py-4 text-[#4d5b59]">{r.personas}</td>
+                        <td className="px-6 py-4">{estadoBadge(r.estado)}</td>
+                        <td className="px-6 py-4">
+                          <div className="flex gap-2">
+                            {r.estado === "pendiente" && (
+                              <button
+                                onClick={() => abrirModal(r, "confirmar")}
+                                className="rounded-full bg-[#ecfaf3] px-4 py-1.5 text-xs font-bold text-[#1d7a4a] transition hover:bg-[#1d7a4a] hover:text-white"
+                              >
+                                Confirmar
+                              </button>
+                            )}
+                            {r.estado !== "cancelada" && (
+                              <button
+                                onClick={() => abrirModal(r, "cancelar")}
+                                className="rounded-full bg-[#fce7ee] px-4 py-1.5 text-xs font-bold text-[#d97c97] transition hover:bg-[#d97c97] hover:text-white"
+                              >
+                                Cancelar
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* ── CARDS — solo en mobile (< md) ── */}
+              <div className="flex flex-col gap-4 md:hidden">
+                {reservas.map((r) => (
+                  <div
+                    key={r.id}
+                    className="rounded-[24px] bg-white border border-[#f0e6db] shadow-sm p-5"
+                  >
+                    {/* Fila superior: nombre + badge */}
+                    <div className="flex items-start justify-between gap-2 mb-3">
+                      <div>
+                        <p className="font-bold text-[#1d4448]">{r.nombre}</p>
                         {r.notas && (
                           <p className="mt-0.5 text-xs text-[#4d5b59] italic">"{r.notas}"</p>
                         )}
-                      </td>
-                      <td className="px-6 py-4">
-                        <p className="text-[#4d5b59]">{r.email}</p>
-                        {r.telefono && (
-                          <p className="text-xs text-[#4d5b59]">{r.telefono}</p>
+                      </div>
+                      {estadoBadge(r.estado)}
+                    </div>
+
+                    {/* Info secundaria */}
+                    <div className="flex flex-col gap-1 mb-4 text-sm text-[#4d5b59]">
+                      <span>{r.email}</span>
+                      {r.telefono && <span>{r.telefono}</span>}
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1">
+                        <span>
+                          📅 {formatFechaCorta(r.fecha)}
+                        </span>
+                        <span>
+                          👥 {r.personas} {r.personas === 1 ? "persona" : "personas"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Acciones */}
+                    {r.estado !== "cancelada" && (
+                      <div className="flex gap-2">
+                        {r.estado === "pendiente" && (
+                          <button
+                            onClick={() => abrirModal(r, "confirmar")}
+                            className="flex-1 rounded-full bg-[#ecfaf3] py-2 text-xs font-bold text-[#1d7a4a] transition hover:bg-[#1d7a4a] hover:text-white"
+                          >
+                            Confirmar
+                          </button>
                         )}
-                      </td>
-                      <td className="px-6 py-4 text-[#4d5b59]">
-                        {new Date(r.fecha).toLocaleString("es-AR", {
-                          day: "2-digit", month: "short",
-                          year: "numeric", hour: "2-digit", minute: "2-digit",
-                        })}
-                      </td>
-                      <td className="px-6 py-4 text-[#4d5b59]">{r.personas}</td>
-                      <td className="px-6 py-4">{estadoBadge(r.estado)}</td>
-                      <td className="px-6 py-4">
-                        <div className="flex gap-2">
-                          {r.estado === "pendiente" && (
-                            <button
-                              onClick={() => abrirModal(r, "confirmar")}
-                              className="rounded-full bg-[#ecfaf3] px-4 py-1.5 text-xs font-bold text-[#1d7a4a] transition hover:bg-[#1d7a4a] hover:text-white"
-                            >
-                              Confirmar
-                            </button>
-                          )}
-                          {r.estado !== "cancelada" && (
-                            <button
-                              onClick={() => abrirModal(r, "cancelar")}
-                              className="rounded-full bg-[#fce7ee] px-4 py-1.5 text-xs font-bold text-[#d97c97] transition hover:bg-[#d97c97] hover:text-white"
-                            >
-                              Cancelar
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                        <button
+                          onClick={() => abrirModal(r, "cancelar")}
+                          className="flex-1 rounded-full bg-[#fce7ee] py-2 text-xs font-bold text-[#d97c97] transition hover:bg-[#d97c97] hover:text-white"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
           )}
         </div>
       </main>
@@ -278,10 +352,10 @@ export default function AdminPage() {
       {/* ── MODAL ── */}
       {modalTipo && reservaSeleccionada && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-6 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/40 px-0 sm:px-6 backdrop-blur-sm"
           onClick={(e) => { if (e.target === e.currentTarget) cerrarModal(); }}
         >
-          <div className="w-full max-w-sm rounded-[28px] bg-white border border-[#f0e6db] p-8 shadow-xl">
+          <div className="w-full sm:max-w-sm rounded-t-[28px] sm:rounded-[28px] bg-white border border-[#f0e6db] p-6 sm:p-8 shadow-xl">
 
             <div className="mb-6 text-center">
               {modalTipo === "cancelar" ? (
@@ -295,9 +369,7 @@ export default function AdminPage() {
                     <span className="font-bold text-[#1d4448]">{reservaSeleccionada.nombre}</span>{" "}
                     para el{" "}
                     <span className="font-bold text-[#1d4448]">
-                      {new Date(reservaSeleccionada.fecha).toLocaleString("es-AR", {
-                        day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
-                      })}
+                      {formatFechaCorta(reservaSeleccionada.fecha)}
                     </span>
                     . Esta acción no se puede deshacer.
                   </p>
@@ -313,9 +385,7 @@ export default function AdminPage() {
                     <span className="font-bold text-[#1d4448]">{reservaSeleccionada.nombre}</span>{" "}
                     para el{" "}
                     <span className="font-bold text-[#1d4448]">
-                      {new Date(reservaSeleccionada.fecha).toLocaleString("es-AR", {
-                        day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit",
-                      })}
+                      {formatFechaCorta(reservaSeleccionada.fecha)}
                     </span>
                     .
                   </p>

@@ -25,31 +25,23 @@ const locationData = [
 
 export default function Location() {
   return (
-    <section className="px-6 py-20 bg-white">
-      <div className="mx-auto grid max-w-7xl gap-6 md:grid-cols-3">
+    <section className="px-6 py-16 bg-white">
+      <div className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {locationData.map((item, i) => {
           const Icon = item.Icon;
-
           return (
             <div
               key={i}
-              className="rounded-[32px] bg-white p-8 shadow-sm border border-[#eee]"
+              className="rounded-[24px] bg-white p-7 shadow-sm border border-[#eee]"
             >
-              <div className="mb-6 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#fce7ee] text-[#d97c97]">
+              <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-full bg-[#fce7ee] text-[#d97c97]">
                 <Icon size={24} />
               </div>
-
               <p className="text-[10px] font-bold uppercase tracking-widest text-[#d97c97] mb-2">
                 {item.label}
               </p>
-
-              <h3 className="text-2xl font-bold text-[#1d4448] mb-3">
-                {item.title}
-              </h3>
-
-              <p className="text-[#4d5b59] text-sm leading-relaxed">
-                {item.desc}
-              </p>
+              <h3 className="text-xl font-bold text-[#1d4448] mb-2">{item.title}</h3>
+              <p className="text-[#4d5b59] text-sm leading-relaxed">{item.desc}</p>
             </div>
           );
         })}
