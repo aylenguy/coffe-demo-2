@@ -90,7 +90,7 @@ export default function NosotrosPage() {
             >
               <div className="relative z-10 overflow-hidden rounded-[48px] border border-[#f0e6db] shadow-2xl">
                 <Image
-                  src="/images/bar.jpg"
+                  src="/images/bar.webp"
                   alt="Atmósfera Brunch & Co"
                   width={900}
                   height={1100}
@@ -106,7 +106,7 @@ export default function NosotrosPage() {
                 className="absolute -bottom-12 -right-12 z-20 hidden w-64 overflow-hidden rounded-3xl border-8 border-[#faf8f6] shadow-2xl xl:block"
               >
                 <Image
-                  src="/images/detalle-cafe.jpg"
+                  src="/images/detalle-cafe.webp"
                   alt="Detalle artesanal"
                   width={400}
                   height={400}
