@@ -2,18 +2,25 @@
 
 import { useState } from "react";
 
-
 export default function ReservasPage() {
+  const ahora = new Date();
+  ahora.setMinutes(ahora.getMinutes() - ahora.getTimezoneOffset());
+  const minFecha = ahora.toISOString().slice(0, 16);
+
   const [form, setForm] = useState({
     nombre: "",
     email: "",
+    telefono: "",
     fecha: "",
-    cantidadPersonas: 1,
+    personas: 1,
+    notas: "",
   });
   const [estado, setEstado] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [mensajeError, setMensajeError] = useState("");
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
@@ -27,30 +34,32 @@ export default function ReservasPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...form,
-          cantidadPersonas: Number(form.cantidadPersonas),
+          nombre:   form.nombre,
+          email:    form.email,
+          telefono: form.telefono || null,
+          fecha:    form.fecha,
+          personas: Number(form.personas),
+          notas:    form.notas || null,
         }),
       });
 
       if (!res.ok) {
         const data = await res.json();
-        // La API puede devolver { mensaje: "..." } o errores de validación
-        if (data.mensaje) {
-          setMensajeError(data.mensaje);
-        } else {
-          setMensajeError("Revisá los datos ingresados.");
-        }
+        setMensajeError(data.mensaje ?? "Revisá los datos ingresados.");
         setEstado("error");
         return;
       }
 
       setEstado("ok");
-      setForm({ nombre: "", email: "", fecha: "", cantidadPersonas: 1 });
+      setForm({ nombre: "", email: "", telefono: "", fecha: "", personas: 1, notas: "" });
     } catch {
       setMensajeError("No se pudo conectar con el servidor. Intentá de nuevo.");
       setEstado("error");
     }
   }
+
+  const inputClass =
+    "rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition w-full";
 
   return (
     <main className="min-h-screen bg-white">
@@ -75,88 +84,141 @@ export default function ReservasPage() {
       </section>
 
       {/* Formulario */}
-      <section className="px-6 py-6">
+      <section className="px-6 py-6 pb-20">
         <div className="mx-auto max-w-lg">
           <div className="rounded-[32px] bg-white p-10 shadow-sm border border-[#f0e6db]">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-bold text-[#1d4448]">Nombre</label>
-                <input
-                  name="nombre"
-                  value={form.nombre}
-                  onChange={handleChange}
-                  required
-                  placeholder="Tu nombre"
-                  className="rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-bold text-[#1d4448]">Email</label>
-                <input
-                  name="email"
-                  type="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  required
-                  placeholder="tu@email.com"
-                  className="rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-bold text-[#1d4448]">Fecha y hora</label>
-                <input
-                  name="fecha"
-                  type="datetime-local"
-                  value={form.fecha}
-                  onChange={handleChange}
-                  required
-                  className="rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-sm font-bold text-[#1d4448]">Cantidad de personas</label>
-                <input
-                  name="cantidadPersonas"
-                  type="number"
-                  min={1}
-                  max={20}
-                  value={form.cantidadPersonas}
-                  onChange={handleChange}
-                  required
-                  className="rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={estado === "loading"}
-                className="mt-2 rounded-full bg-[#1d4448] px-10 py-4 text-sm font-bold text-white transition hover:bg-[#d97c97] disabled:opacity-50"
-              >
-                {estado === "loading" ? "Enviando..." : "Confirmar reserva"}
-              </button>
-
-              {estado === "ok" && (
-                <p className="text-center text-sm font-bold text-[#1d4448]">
-                  ¡Reserva confirmada! Te esperamos 🎉
-                </p>
-              )}
-
-              {estado === "error" && (
-                <div className="rounded-2xl border border-[#f2a9c0] bg-[#fce7ee] px-5 py-4 text-center">
-                  <p className="text-sm font-bold text-[#d97c97]">
-                    No pudimos confirmar tu reserva
-                  </p>
-                  <p className="mt-1 text-xs text-[#c66a85]">
-                    {mensajeError}
-                  </p>
+            {estado === "ok" ? (
+              // ── ÉXITO ──
+              <div className="flex flex-col items-center gap-4 py-6 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#ecfaf3] text-3xl">
+                  ✓
                 </div>
-              )}
+                <h2 className="text-xl font-bold text-[#1d4448]">
+                  ¡Reserva confirmada!
+                </h2>
+                <p className="text-sm text-[#4d5b59]">
+                  Te esperamos. Recibirás un recordatorio por email.
+                </p>
+                <button
+                  onClick={() => setEstado("idle")}
+                  className="mt-2 rounded-full border border-[#e0d9d0] px-8 py-3 text-sm font-bold text-[#1d4448] transition hover:border-[#d97c97] hover:text-[#d97c97]"
+                >
+                  Hacer otra reserva
+                </button>
+              </div>
+            ) : (
+              // ── FORMULARIO ──
+              <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
-            </form>
+                {/* Nombre */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-bold text-[#1d4448]">Nombre</label>
+                  <input
+                    name="nombre"
+                    value={form.nombre}
+                    onChange={handleChange}
+                    required
+                    placeholder="Tu nombre"
+                    className={inputClass}
+                  />
+                </div>
+
+                {/* Email + Teléfono en fila */}
+                <div className="flex gap-3">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label className="text-sm font-bold text-[#1d4448]">Email</label>
+                    <input
+                      name="email"
+                      type="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      required
+                      placeholder="tu@email.com"
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label className="text-sm font-bold text-[#1d4448]">
+                      Teléfono{" "}
+                      <span className="font-normal text-[#4d5b59]">(opcional)</span>
+                    </label>
+                    <input
+                      name="telefono"
+                      type="tel"
+                      value={form.telefono}
+                      onChange={handleChange}
+                      placeholder="11 1234-5678"
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                {/* Fecha + Personas en fila */}
+                <div className="flex gap-3">
+                  <div className="flex flex-1 flex-col gap-1">
+                    <label className="text-sm font-bold text-[#1d4448]">Fecha y hora</label>
+                    <input
+                      name="fecha"
+                      type="datetime-local"
+                      value={form.fecha}
+                      onChange={handleChange}
+                      required
+                      min={minFecha}
+                      className={inputClass}
+                    />
+                  </div>
+                  <div className="flex w-32 flex-col gap-1">
+                    <label className="text-sm font-bold text-[#1d4448]">Personas</label>
+                    <input
+                      name="personas"
+                      type="number"
+                      min={1}
+                      max={20}
+                      value={form.personas}
+                      onChange={handleChange}
+                      required
+                      className={inputClass}
+                    />
+                  </div>
+                </div>
+
+                {/* Notas */}
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm font-bold text-[#1d4448]">
+                    Notas{" "}
+                    <span className="font-normal text-[#4d5b59]">(opcional)</span>
+                  </label>
+                  <textarea
+                    name="notas"
+                    value={form.notas}
+                    onChange={handleChange}
+                    placeholder="Alergias, ocasión especial, preferencia de mesa..."
+                    rows={3}
+                    className="rounded-2xl border border-[#e0d9d0] bg-[#faf8f6] px-5 py-3 text-sm text-[#1d4448] outline-none focus:border-[#d97c97] transition resize-none w-full"
+                  />
+                </div>
+
+                {/* Error */}
+                {estado === "error" && (
+                  <div className="rounded-2xl border border-[#f2a9c0] bg-[#fce7ee] px-5 py-4 text-center">
+                    <p className="text-sm font-bold text-[#d97c97]">
+                      No pudimos confirmar tu reserva
+                    </p>
+                    <p className="mt-1 text-xs text-[#c66a85]">{mensajeError}</p>
+                  </div>
+                )}
+
+                <button
+                  type="submit"
+                  disabled={estado === "loading"}
+                  className="mt-2 rounded-full bg-[#1d4448] px-10 py-4 text-sm font-bold text-white transition hover:bg-[#d97c97] disabled:opacity-50"
+                >
+                  {estado === "loading" ? "Enviando..." : "Confirmar reserva"}
+                </button>
+
+              </form>
+            )}
           </div>
         </div>
       </section>
